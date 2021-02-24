@@ -5,6 +5,7 @@ public class Main {
 
     static char[][] map;
     static final int SIZE = 5;
+    static final int DOTS_FOR_WIN = 4;
     static final char DOT_EMPTY = '.';
     static final char DOT_X = 'X';
     static final char DOT_0 = '0';
@@ -62,18 +63,18 @@ public class Main {
     {
         for (int i = 0; i <= SIZE; i++)
         {
-            System.out.print(i + " ");
+            System.out.print(i + "    ");
         }
 
         System.out.println();
 
         for (int i = 0; i < SIZE; i++)
         {
-            System.out.print((i + 1) + " ");
+            System.out.print((i + 1) + "    ");
 
             for (int j = 0; j < SIZE; j++)
             {
-                System.out.print(map[i][j] + " ");
+                System.out.print(map[i][j] + "    ");
             }
 
             System.out.println();
@@ -132,98 +133,65 @@ public class Main {
 
     static boolean checkWin(char symb)
     {
-        for (int i = 0; i < map.length; i ++)
-        {
-            boolean isWinColumn = true;
-            boolean isWinRow = true;
-            int cnt = 0;
-            for (int j = 1; j < map[i].length - 1; j++)
-            {
+        int cntMove = map.length - DOTS_FOR_WIN + 1;
 
-                //строки
-                if (map[i][j] != symb || (map[i][0] != symb && map[i][map[i].length - 1] != symb)) {
-                    isWinRow = false;
-                }
-                //столбцы
-                if (map[j][i] != symb || (map[0][i] != symb && map[map.length - 1][i] != symb))
+        /*Решать задачу будем делением игрового поля на миниполя с размерностью равной необходимому кол-во символов подрял для победы*/
+        for (int iMove = 0; iMove < cntMove; iMove++)
+        {
+            for (int jMove = 0; jMove < cntMove; jMove++)
+            {
+                //зная координаты левого верхнего квадрата миниполя, начинаем работать с ним
+                for (int i = iMove; i < iMove + DOTS_FOR_WIN; i ++)
                 {
-                    isWinColumn = false;
+                    boolean isWinColumn = true;
+                    boolean isWinRow = true;
+                    int cnt = 0;
+                    for (int j = jMove; j < jMove + DOTS_FOR_WIN; j++)
+                    {
+                        //строки
+                        if (map[i][j] != symb)
+                        {
+                            isWinRow = false;
+                        }
+                        //столбцы
+                        if (map[j][i] != symb)
+                        {
+                            isWinColumn = false;
+                        }
+                    }
+                    if (isWinRow || isWinColumn) return true;
                 }
-            }
-            if (isWinRow || isWinColumn) return true;
-        }
-//        for (int i = 0; i < map.length; i ++)
-//        {
-//            boolean isWinColumn = true;
-//            boolean isWinRow = true;
-//            int cnt = 0;
-//            for (int j = 0; j < map[i].length; j++)
-//            {
-//                //строки
-//                if (map[i][j] != symb && cnt < map.length)
-//                {
-//                    isWinRow = false;
-//                }
-//                //столбцы
-//                if (map[j][i] != symb)
-//                {
-//                    isWinColumn = false;
-//                }
-//            }
-//            if (isWinRow || isWinColumn) return true;
-//        }
 
-        //диагонали
-        boolean isWinMainDiagonal = true;
-        boolean isWinSecondaryDiagonal = true;
-        for (int i = 0; i < map.length; i++)
-        {
-            if (map[i][i] != symb || (map[0][0] != symb && map[map.length - 1][map[i].length - 1] != symb))
-            {
-                isWinMainDiagonal = false;
-            }
-            if (map[i][map.length - i - 1] != symb || (map[0][map[i].length - 1] != symb && map[map.length - 1][0] != symb))
-            {
-                isWinSecondaryDiagonal = false;
+                //диагонали
+                boolean isWinMainDiagonal = true;
+                boolean isWinSecondaryDiagonal = true;
+                int i = 0;
+                int j = 0;
+                for (i = iMove, j = jMove; i < iMove + DOTS_FOR_WIN && j < jMove + DOTS_FOR_WIN; i++, j++)
+                {
+                    //основная
+                    if (map[i][j] != symb)
+                    {
+                        isWinMainDiagonal = false;
+                    }
+                    //побочная
+                    if (SIZE != DOTS_FOR_WIN) {
+                        if (map[i][jMove + DOTS_FOR_WIN - j] != symb)
+                        {
+                            isWinSecondaryDiagonal = false;
+                        }
+                    }
+                    else
+                    {
+                        if (map[i][jMove + DOTS_FOR_WIN - j - 1] != symb)
+                        {
+                            isWinSecondaryDiagonal = false;
+                        }
+                    }
+                }
+                if (isWinMainDiagonal || isWinSecondaryDiagonal) return true;
             }
         }
-        if (isWinMainDiagonal || isWinSecondaryDiagonal) return true;
-
-        //строки
-//        if (map[0][0] == symb && map[0][1] == symb && map[0][2] == symb)
-//        {
-//            return true;
-//        }
-//        if (map[1][0] == symb && map[1][1] == symb && map[1][2] == symb)
-//        {
-//            return true;
-//        }
-//        if (map[2][0] == symb && map[2][1] == symb && map[2][2] == symb)
-//        {
-//            return true;
-//        }
-//        //столбцы
-//        if (map[0][0] == symb  &&  map[1][0] == symb && map[2][0] == symb)
-//        {
-//            return true;
-//        }
-//        if (map[0][1] == symb && map[1][1] == symb && map[2][1] == symb)
-//        {
-//            return true;
-//        }
-//        if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb)
-//        {
-//            return true;
-//        }
-//        //Диагонали
-//        if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb)
-//        {
-//            return true;
-//        }
-//        if (map[0][2] == symb && map[1][1] == symb && map[2][0] == symb)
-//        {
-//            return true;
-//        }
 
         return false;
     }
