@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
 
     static char[][] map;
-    static final int SIZE = 5;
+    static final int SIZE = 6;
     static final int DOTS_FOR_WIN = 4;
     static final char DOT_EMPTY = '.';
     static final char DOT_X = 'X';
@@ -167,27 +167,20 @@ public class Main {
                 boolean isWinSecondaryDiagonal = true;
                 int i = 0;
                 int j = 0;
-                for (i = iMove, j = jMove; i < iMove + DOTS_FOR_WIN && j < jMove + DOTS_FOR_WIN; i++, j++)
+//                System.out.println(" -------------------------------- " + iMove + " ---------- " + jMove);
+                for (i = iMove, j = 0; i < iMove + DOTS_FOR_WIN && j < DOTS_FOR_WIN; i++, j++)
                 {
                     //основная
-                    if (map[i][j] != symb)
+                    if (map[i][jMove + j] != symb)
                     {
                         isWinMainDiagonal = false;
                     }
                     //побочная
-                    if (SIZE != DOTS_FOR_WIN) {
-                        if (map[i][jMove + DOTS_FOR_WIN - j] != symb)
-                        {
-                            isWinSecondaryDiagonal = false;
-                        }
-                    }
-                    else
+                    if (map[i][jMove + DOTS_FOR_WIN - j - 1] != symb)
                     {
-                        if (map[i][jMove + DOTS_FOR_WIN - j - 1] != symb)
-                        {
-                            isWinSecondaryDiagonal = false;
-                        }
+                        isWinSecondaryDiagonal = false;
                     }
+//                    System.out.println("                                 [" + i + "][" + (jMove + j) + "]         [" + i + "][" + (jMove + DOTS_FOR_WIN - j - 1) + "]");
                 }
                 if (isWinMainDiagonal || isWinSecondaryDiagonal) return true;
             }
