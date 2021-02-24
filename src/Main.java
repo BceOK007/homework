@@ -167,7 +167,7 @@ public class Main {
                 boolean isWinSecondaryDiagonal = true;
                 int i = 0;
                 int j = 0;
-//                System.out.println(" -------------------------------- " + iMove + " ---------- " + jMove);
+//                System.out.println("  -------------------------------- " + iMove + " ---------- " + jMove);
                 for (i = iMove, j = 0; i < iMove + DOTS_FOR_WIN && j < DOTS_FOR_WIN; i++, j++)
                 {
                     //основная
