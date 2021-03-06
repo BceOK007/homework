@@ -9,21 +9,23 @@ public class Main {
     static final char DOT_EMPTY = '.';
     static final char DOT_X = 'X';
     static final char DOT_0 = '0';
+    public static boolean IS_WAIT_PLAYER = true;
 
     public static void main(String[] args) {
 
         initMap();
-//        printMap();
-        new TicTacToe();
 
+        new TicTacToe();
 
         while (true)
         {
-            //humanTurn();
-//            printMap();
+            IS_WAIT_PLAYER = true;
+            humanTurn();
+            printMap();
             if (checkWin(DOT_X))
             {
                 System.out.println("Победил человек");
+                     //     setTitle("Крестики - Нолики:  " + "Ваш ход!");
                 break;
             }
             if (isMapFull())
@@ -33,7 +35,7 @@ public class Main {
             }
 
             aiTurn();
-//            printMap();
+            printMap();
             if (checkWin(DOT_0))
             {
                 System.out.println("Победил Т-1000");
@@ -84,19 +86,26 @@ public class Main {
         }
     }
 
-    static void humanTurn(int x, int y)
+    static void humanTurn()
     {
-//        Scanner sc = new Scanner((System.in));
-//        int x;
-//        int y;
+        Scanner sc = new Scanner((System.in));
+        int x;
+        int y;
 
         do
         {
-
+            System.out.println("Введите координаты в формате X Y");
+            x = sc.nextInt() - 1;
+            y = sc.nextInt() - 1;
         }
         while (!isCellValod(x, y));
-        System.out.println("Человек сходил в точку " + (x + 1) + " " + (y + 1));
+
+//        while (IS_WAIT_PLAYER){
+//
+//        }
+        System.out.println("Человек сходил в точку " + (x) + " " + (y));
         map[y][x] = DOT_X;
+
     }
 
     static void aiTurn()
@@ -114,8 +123,8 @@ public class Main {
 
         System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
         map[y][x] = DOT_0;
-        ActionListener pressButton = new PressButtonAL();
-        TicTacToe.btnArray[x][y].addActionListener(pressButton);
+        TicTacToe.btnArray[x][y].setText(String.valueOf(DOT_0));
+        TicTacToe.btnArray[x][y].setEnabled(false);
     }
 
     static boolean isCellValod (int x, int y)

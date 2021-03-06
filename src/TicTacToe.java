@@ -6,9 +6,8 @@ public class TicTacToe extends JFrame
 {
     private static final int SIZE_WIDTH = 400;
     private static final int SIZE_HEIGHT = 400;
-    public static int SIZE = 3;
+    private static int SIZE = Main.SIZE;
     public static JButton[][] btnArray = new JButton[SIZE][SIZE];
-    private static final int[] numberArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     TicTacToe() {
         setVisible(true); //видимость
@@ -18,29 +17,36 @@ public class TicTacToe extends JFrame
                 getGraphicsConfiguration().getBounds().height / 2 - SIZE_HEIGHT / 2,
                 SIZE_WIDTH, SIZE_HEIGHT);
 
-        setTitle("Крестики - Нолики");
+        setTitle("Крестики - Нолики:  " + "Ваш ход!");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+
 
         initComponents();
     }
 
+    public void updateTitle (String title)
+    {
+        this.setTitle(title);
+    }
+
     public void initComponents() {
+
+        Font buttonFont = new Font("sanserif", Font.BOLD, 55);
 
         JPanel panel = new JPanel(new GridLayout(SIZE, SIZE));
 
         ActionListener pressButton = new PressButtonAL();
-        int l = 0;
 
         for (int i = 0; i < SIZE; i++)
         {
             for (int j = 0; j < SIZE; j++)
             {
-                btnArray[i][j] = new JButton(String.valueOf(numberArray[l]));
+                btnArray[i][j] = new JButton(i + "" + j);
+                btnArray[i][j].setFont(buttonFont);
+                btnArray[i][j].setActionCommand(i + "" + j);
                 panel.add(btnArray[i][j]);
                 btnArray[i][j].addActionListener(pressButton);
-                System.out.println(i + "  " + j + "   " + btnArray[i][j]);
-                l++;
             }
         }
 
