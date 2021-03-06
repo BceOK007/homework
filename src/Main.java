@@ -9,7 +9,7 @@ public class Main {
     static final char DOT_EMPTY = '.';
     static final char DOT_X = 'X';
     static final char DOT_0 = '0';
-    public static boolean IS_WAIT_PLAYER = true;
+    public static boolean IS_WAIT_PLAYER = false;
 
     public static void main(String[] args) {
 
@@ -17,38 +17,61 @@ public class Main {
 
         new TicTacToe();
 
-        while (true)
-        {
-            IS_WAIT_PLAYER = true;
-            humanTurn();
-            printMap();
-            if (checkWin(DOT_X))
-            {
-                System.out.println("Победил человек");
-                     //     setTitle("Крестики - Нолики:  " + "Ваш ход!");
-                break;
-            }
-            if (isMapFull())
-            {
-                System.out.println("Ничья");
-                break;
-            }
-
-            aiTurn();
-            printMap();
-            if (checkWin(DOT_0))
-            {
-                System.out.println("Победил Т-1000");
-                break;
-            }
-            if (isMapFull())
-            {
-                System.out.println("Ничья");
-                break;
-            }
-        }
+//        while (true)
+//        {
+//            if (IS_WAIT_PLAYER) {
+////            IS_WAIT_PLAYER = true;
+//                humanTurn();
+//                printMap();
+//                if (checkWin(DOT_X)) {
+//                    System.out.println("Победил человек");
+//                    break;
+//                }
+//                if (isMapFull()) {
+//                    System.out.println("Ничья");
+//                    break;
+//                }
+//
+//                aiTurn();
+//                printMap();
+//                if (checkWin(DOT_0)) {
+//                    System.out.println("Победил Т-1000");
+//                    break;
+//                }
+//                if (isMapFull()) {
+//                    System.out.println("Ничья");
+//                    break;
+//                }
+//                IS_WAIT_PLAYER = false;
+//            }
+//        }
 
 //        System.out.println("Игра окончена.");
+    }
+
+    static void step(int x, int y){
+
+        humanTurn(x, y);
+        printMap();
+        if (checkWin(DOT_X)) {
+            System.out.println("Победил человек");
+//            break;
+        }
+        if (isMapFull()) {
+            System.out.println("Ничья");
+//            break;
+        }
+
+        aiTurn();
+        printMap();
+        if (checkWin(DOT_0)) {
+            System.out.println("Победил Т-1000");
+//            break;
+        }
+        if (isMapFull()) {
+            System.out.println("Ничья");
+//            break;
+        }
     }
 
     static void initMap()
@@ -86,25 +109,25 @@ public class Main {
         }
     }
 
-    static void humanTurn()
+    static void humanTurn(int x, int y)
     {
-        Scanner sc = new Scanner((System.in));
-        int x;
-        int y;
-
-        do
-        {
-            System.out.println("Введите координаты в формате X Y");
-            x = sc.nextInt() - 1;
-            y = sc.nextInt() - 1;
-        }
-        while (!isCellValod(x, y));
+//        Scanner sc = new Scanner((System.in));
+//        int x;
+//        int y;
+//
+//        do
+//        {
+//            System.out.println("Введите координаты в формате X Y");
+//            x = sc.nextInt() - 1;
+//            y = sc.nextInt() - 1;
+//        }
+//        while (!isCellValod(x, y));
 
 //        while (IS_WAIT_PLAYER){
 //
 //        }
         System.out.println("Человек сходил в точку " + (x) + " " + (y));
-        map[y][x] = DOT_X;
+        map[x][y] = DOT_X;
 
     }
 
@@ -123,8 +146,8 @@ public class Main {
 
         System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
         map[y][x] = DOT_0;
-        TicTacToe.btnArray[x][y].setText(String.valueOf(DOT_0));
-        TicTacToe.btnArray[x][y].setEnabled(false);
+        TicTacToe.btnArray[y][x].setText(String.valueOf(DOT_0));
+        TicTacToe.btnArray[y][x].setEnabled(false);
     }
 
     static boolean isCellValod (int x, int y)
