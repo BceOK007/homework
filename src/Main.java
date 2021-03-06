@@ -6,70 +6,43 @@ public class Main {
 
     public static char[][] map;
     static final int SIZE = 3;
+    static final int DOTS_FOR_WIN = 3;
     static final char DOT_EMPTY = '.';
     static final char DOT_X = 'X';
     static final char DOT_0 = '0';
-    public static boolean IS_WAIT_PLAYER = false;
 
     public static void main(String[] args) {
 
         initMap();
 
         new TicTacToe();
-
-//        while (true)
-//        {
-//            if (IS_WAIT_PLAYER) {
-////            IS_WAIT_PLAYER = true;
-//                humanTurn();
-//                printMap();
-//                if (checkWin(DOT_X)) {
-//                    System.out.println("Победил человек");
-//                    break;
-//                }
-//                if (isMapFull()) {
-//                    System.out.println("Ничья");
-//                    break;
-//                }
-//
-//                aiTurn();
-//                printMap();
-//                if (checkWin(DOT_0)) {
-//                    System.out.println("Победил Т-1000");
-//                    break;
-//                }
-//                if (isMapFull()) {
-//                    System.out.println("Ничья");
-//                    break;
-//                }
-//                IS_WAIT_PLAYER = false;
-//            }
-//        }
-
-//        System.out.println("Игра окончена.");
     }
 
     static void step(int x, int y){
 
         humanTurn(x, y);
-        printMap();
+//        printMap();
         if (checkWin(DOT_X)) {
-            System.out.println("Победил человек");
+//            System.out.println("Победил человек");
+            SendMessage msg = new SendMessage("                                Победил человек!");
 //            break;
         }
         if (isMapFull()) {
-            System.out.println("Ничья");
+//            System.out.println("Ничья");
+            SendMessage msg = new SendMessage("                                Ничья!");
 //            break;
         }
 
         aiTurn();
-        printMap();
+//        printMap();
         if (checkWin(DOT_0)) {
-            System.out.println("Победил Т-1000");
+//            System.out.println("Победил Т-1000");
+            SendMessage msg = new SendMessage("                                Победил компьютер!");
 //            break;
         }
         if (isMapFull()) {
-            System.out.println("Ничья");
+//            System.out.println("Ничья");
+            SendMessage msg = new SendMessage("                                Ничья!");
 //            break;
         }
     }
@@ -111,24 +84,9 @@ public class Main {
 
     static void humanTurn(int x, int y)
     {
-//        Scanner sc = new Scanner((System.in));
-//        int x;
-//        int y;
-//
-//        do
-//        {
-//            System.out.println("Введите координаты в формате X Y");
-//            x = sc.nextInt() - 1;
-//            y = sc.nextInt() - 1;
-//        }
-//        while (!isCellValod(x, y));
-
-//        while (IS_WAIT_PLAYER){
-//
-//        }
-        System.out.println("Человек сходил в точку " + (x) + " " + (y));
         map[x][y] = DOT_X;
-
+        TicTacToe.btnArray[x][y].setText(String.valueOf(DOT_X));
+        TicTacToe.btnArray[x][y].setEnabled(false);
     }
 
     static void aiTurn()
@@ -144,7 +102,7 @@ public class Main {
         }
         while (!isCellValod(x, y));
 
-        System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
+//        System.out.println("Компьютер сходил в точку " + (x + 1) + " " + (y + 1));
         map[y][x] = DOT_0;
         TicTacToe.btnArray[y][x].setText(String.valueOf(DOT_0));
         TicTacToe.btnArray[y][x].setEnabled(false);
@@ -167,42 +125,58 @@ public class Main {
 
     static boolean checkWin(char symb)
     {
-        for (int i = 0; i < map.length; i ++)
-        {
-            boolean isWinColumn = true;
-            boolean isWinRow = true;
-            int cnt = 0;
-            for (int j = 1; j < map[i].length - 1; j++)
-            {
+        int cntMove = map.length - DOTS_FOR_WIN + 1;
 
-                //строки
-                if (map[i][j] != symb || (map[i][0] != symb && map[i][map[i].length - 1] != symb)) {
-                    isWinRow = false;
-                }
-                //столбцы
-                if (map[j][i] != symb || (map[0][i] != symb && map[map.length - 1][i] != symb))
+        /*Решать задачу будем делением игрового поля на миниполя с размерностью равной необходимому кол-во символов подрял для победы*/
+        for (int iMove = 0; iMove < cntMove; iMove++)
+        {
+            for (int jMove = 0; jMove < cntMove; jMove++)
+            {
+                //зная координаты левого верхнего квадрата миниполя, начинаем работать с ним
+                for (int i = iMove; i < iMove + DOTS_FOR_WIN; i ++)
                 {
-                    isWinColumn = false;
+                    boolean isWinColumn = true;
+                    boolean isWinRow = true;
+                    int cnt = 0;
+                    for (int j = jMove; j < jMove + DOTS_FOR_WIN; j++)
+                    {
+                        //строки
+                        if (map[i][j] != symb)
+                        {
+                            isWinRow = false;
+                        }
+                        //столбцы
+                        if (map[j][i] != symb)
+                        {
+                            isWinColumn = false;
+                        }
+                    }
+                    if (isWinRow || isWinColumn) return true;
                 }
-            }
-            if (isWinRow || isWinColumn) return true;
-        }
 
-        //диагонали
-        boolean isWinMainDiagonal = true;
-        boolean isWinSecondaryDiagonal = true;
-        for (int i = 0; i < map.length; i++)
-        {
-            if (map[i][i] != symb || (map[0][0] != symb && map[map.length - 1][map[i].length - 1] != symb))
-            {
-                isWinMainDiagonal = false;
-            }
-            if (map[i][map.length - i - 1] != symb || (map[0][map[i].length - 1] != symb && map[map.length - 1][0] != symb))
-            {
-                isWinSecondaryDiagonal = false;
+                //диагонали
+                boolean isWinMainDiagonal = true;
+                boolean isWinSecondaryDiagonal = true;
+                int i = 0;
+                int j = 0;
+//                System.out.println("  -------------------------------- " + iMove + " ---------- " + jMove);
+                for (i = iMove, j = 0; i < iMove + DOTS_FOR_WIN && j < DOTS_FOR_WIN; i++, j++)
+                {
+                    //основная
+                    if (map[i][jMove + j] != symb)
+                    {
+                        isWinMainDiagonal = false;
+                    }
+                    //побочная
+                    if (map[i][jMove + DOTS_FOR_WIN - j - 1] != symb)
+                    {
+                        isWinSecondaryDiagonal = false;
+                    }
+//                    System.out.println("                                 [" + i + "][" + (jMove + j) + "]         [" + i + "][" + (jMove + DOTS_FOR_WIN - j - 1) + "]");
+                }
+                if (isWinMainDiagonal || isWinSecondaryDiagonal) return true;
             }
         }
-        if (isWinMainDiagonal || isWinSecondaryDiagonal) return true;
 
         return false;
     }

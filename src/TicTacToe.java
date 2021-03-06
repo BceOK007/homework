@@ -17,17 +17,11 @@ public class TicTacToe extends JFrame
                 getGraphicsConfiguration().getBounds().height / 2 - SIZE_HEIGHT / 2,
                 SIZE_WIDTH, SIZE_HEIGHT);
 
-        setTitle("Крестики - Нолики:  " + "Ваш ход!");
+        setTitle("Крестики - Нолики:  ");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-
         initComponents();
-    }
-
-    public void updateTitle (String title)
-    {
-        this.setTitle(title);
     }
 
     public void initComponents() {
@@ -36,13 +30,13 @@ public class TicTacToe extends JFrame
 
         JPanel panel = new JPanel(new GridLayout(SIZE, SIZE));
 
-        ActionListener pressButton = new PressButtonAL();
+        ActionListener pressButton = new PressButtonActionListener();
 
         for (int i = 0; i < SIZE; i++)
         {
             for (int j = 0; j < SIZE; j++)
             {
-                btnArray[i][j] = new JButton(i + "" + j);
+                btnArray[i][j] = new JButton(/*i + "" + j*/);
                 btnArray[i][j].setFont(buttonFont);
                 btnArray[i][j].setActionCommand(i + "" + j);
                 panel.add(btnArray[i][j]);
