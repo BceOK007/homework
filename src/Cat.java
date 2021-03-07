@@ -1,17 +1,23 @@
 public class Cat extends Animal
 {
-    /*
-     * 3. У каждого животного есть ограничения на действия (бег: кот 200 м., собака 500 м.; плавание: кот не умеет плавать, собака 10 м.).
-     * */
     private static final int catMaxRunDistance = 200;
     private static final int catMaxSwimDistance = 0;
     private static  int totalCats;
+    private int appetite;
+    /*
+    * 3. Каждому коту нужно добавить поле сытость (когда создаем котов, они голодны).
+    * Если коту удалось покушать (хватило еды), сытость = true.
+    * */
+    private boolean isSatiety;
 
-    Cat(String name) {
+    Cat(String name, int appetite) {
         //Для создания кошки нам нужна только кличка, ограничения у всех кошек одинаковые
         super(name, catMaxRunDistance, catMaxSwimDistance);
+        this.appetite = appetite;
+        this.isSatiety = false;
         totalCats++;
     }
+
 
     @Override
     public void swim(int distance)
@@ -22,5 +28,27 @@ public class Cat extends Animal
     //Получаем кол-во созданных котов
     public static int getTotalCats() {
         return totalCats;
+    }
+
+    /*
+    * 2. Сделать так, чтобы в тарелке с едой не могло получиться отрицательного количества еды
+    * (например, в миске 10 еды, а кот пытается покушать 15-20).
+    *
+    * 4. Считаем, что если коту мало еды в тарелке, то он её просто не трогает,
+    * то есть не может быть наполовину сыт (это сделано для упрощения логики программы).
+    * */
+    void eat(Plate plate)
+    {
+        if (isSatiety) {//если кот сыт, то валим отсюда
+            System.out.println(name + " сыт(а).");
+        }
+        else if (plate.isEnoughFood(appetite)) {//проверка на достаточность еды в миске
+            plate.decreaseFood(appetite);
+            System.out.println(name + " наелся(ась).");
+            isSatiety = true;
+        }
+        else {
+            System.out.println("Для " + name + " недостаточно еды в тарелке!");
+        }
     }
 }

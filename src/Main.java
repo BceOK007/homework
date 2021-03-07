@@ -2,42 +2,36 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //Создаем собак
-        Dog dogBobik = new Dog ("Бобик");
-        Dog dogLacy = new Dog("Лайси");
-        Dog dogHachi = new Dog("Хатико");
-
-        //Создаем кошек
-        Cat catMurzik = new Cat("Мурзик");
-        Cat catUgolek = new Cat("Уголек");
-
-        //действия животных
-        dogAction(dogBobik, 150, 30);
-        dogAction(dogLacy, 600, 3);
-        dogAction(dogBobik, 300, 2);
-
-        catAction(catMurzik, 100, 1);
-        catAction(catUgolek, 300, 2);
-
         /*
-         * 4. * Добавить подсчет созданных котов, собак и животных.
-         * */
-        System.out.println("\nВсего животных создано:\t" + Animal.getTotalAnimals());
-        System.out.println("Всего котов создано:\t" + Cat.getTotalCats());
-        System.out.println("Всего собак создано:\t" + Dog.getTotalDogs());
-    }
+        * 1. Расширить задачу про котов и тарелки с едой.
+        *
+        * 5. Создать массив котов и тарелку с едой, попросить всех котов покушать из этой тарелки
+        * и потом вывести информацию о сытости котов в консоль.
+        * */
+        Cat[] cats = new Cat[5];
+        //Создаем кошек
+        cats[0] = new Cat("Мурзик", 15);
+        cats[1] = new Cat("Уголек", 7);
+        cats[2] = new Cat("Машка", 12);
+        cats[3] = new Cat("Матроскин", 10);
+        cats[4] = new Cat("Маруся", 5);
 
-    private static void catAction(Cat cat, int runDistance, int swimDistance)
-    {
-        cat.run(runDistance);
-        cat.swim(swimDistance);
-        System.out.println();
-    }
+        Plate plate = new Plate(10);
 
-    private static void dogAction(Dog dog, int runDistance, int swimDistance)
-    {
-        dog.run(runDistance);
-        dog.swim(swimDistance);
-        System.out.println();
+        System.out.println("Первая кормешка:");
+        for (int i = 0; i < cats.length; i ++)
+        {
+            cats[i].eat(plate);
+        }
+
+        //добавляем еды в миску
+        plate.addFood(30);
+
+        System.out.println("\nВторая кормешка:");
+        for (int i = 0; i < cats.length; i ++)
+        {
+            cats[i].eat(plate);
+        }
+
     }
 }
